@@ -10,9 +10,11 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - '**'  # Will match all branches
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - '**'  # Will match all branches for pull requests
 
 jobs:
   build:

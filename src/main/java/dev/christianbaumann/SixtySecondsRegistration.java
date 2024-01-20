@@ -1,15 +1,17 @@
 package dev.christianbaumann;
 
-import com.microsoft.playwright.*;
-import com.microsoft.playwright.options.*;
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.AriaRole;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.io.IOException;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-
-import java.util.*;
+import java.util.Scanner;
 
 public class SixtySecondsRegistration {
 

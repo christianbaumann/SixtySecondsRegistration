@@ -56,8 +56,9 @@ public class SixtySecondsRegistration {
     }
 
     public static void run(JSONObject userData, JSONObject config) {
+        Browser browser = null;
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(config.getBoolean("headless")));
+            browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(config.getBoolean("headless")));
             Page page = browser.newPage();
 
             try {
@@ -71,9 +72,14 @@ public class SixtySecondsRegistration {
 
             waitForUserInput();
 
-            browser.close();
+        } catch (PlaywrightException e) {
+            logger.error("Error interacting with web elements: {}", e.getMessage());
         } catch (Exception e) {
             logger.error("Error during automation: {}", e.getMessage());
+        } finally {
+            if (browser != null) {
+                browser.close();
+            }
         }
     }
 

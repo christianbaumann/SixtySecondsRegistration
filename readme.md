@@ -1,5 +1,7 @@
 # SixtySecondsRegistration
 
+[![Java CI with Maven](https://github.com/christianbaumann/SixtySecondsRegistration/actions/workflows/maven.yml/badge.svg)](https://github.com/christianbaumann/SixtySecondsRegistration/actions/workflows/maven.yml)
+
 ## Project Overview
 
 `SixtySecondsRegistration` is a Java-based automation script for registering to the "Sixty Seconds Spezial" competition

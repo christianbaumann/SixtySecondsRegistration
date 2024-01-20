@@ -18,7 +18,7 @@ To run this project, the following are required:
 
 1. Clone the repository:
    ``` bash
-   git clone [repository-url]
+   git clone https://github.com/christianbaumann/SixtySecondsRegistration
    ``` 
 2. Navigate to the project directory and run Maven install to set up the project dependencies:
    ``` bash

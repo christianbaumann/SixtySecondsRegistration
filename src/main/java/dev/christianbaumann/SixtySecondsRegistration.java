@@ -127,11 +127,16 @@ public class SixtySecondsRegistration {
      *
      * @param filePath The file path of the JSON file
      * @return JSONObject parsed from the file
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs reading the file
      */
     public static JSONObject readJsonFile(String filePath) throws IOException {
-        String jsonContent = new String(Files.readAllBytes(Paths.get(filePath)));
-        return new JSONObject(jsonContent);
+        try {
+            String jsonContent = new String(Files.readAllBytes(Paths.get(filePath)));
+            return new JSONObject(jsonContent);
+        } catch (org.json.JSONException e) {
+            logger.error("Error parsing JSON file: {}", e.getMessage(), e);
+            throw new IOException("JSON parsing error in file: " + filePath, e);
+        }
     }
 
     /**

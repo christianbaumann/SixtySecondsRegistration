@@ -18,7 +18,8 @@ public class SixtySecondsRegistration {
         }
     }
 
-}
+    public static void main(String[] args) {
+        run();
+    }
 
-// Run the automation
-SixtySecondsRegistration.run();
+}

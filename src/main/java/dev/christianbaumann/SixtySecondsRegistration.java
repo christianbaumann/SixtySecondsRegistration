@@ -20,8 +20,8 @@ public class SixtySecondsRegistration {
 
     private static final Logger logger = LoggerFactory.getLogger(SixtySecondsRegistration.class);
 
-    private static void navigateToRegistrationPage(Page page) {
-        page.navigate("https://www.rockland.de/aktionen/60-seconds-spezial.html");
+    private static void navigateToRegistrationPage(Page page, JSONObject config) {
+        page.navigate(config.getString("url"));
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Auswahl bestätigen")).click();
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Jetzt registrieren!")).click();
     }
@@ -55,13 +55,13 @@ public class SixtySecondsRegistration {
         }
     }
 
-    public static void run(JSONObject userData) {
+    public static void run(JSONObject userData, JSONObject config) {
         try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+            Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(config.getBoolean("headless")));
             Page page = browser.newPage();
 
             try {
-                navigateToRegistrationPage(page);
+                navigateToRegistrationPage(page, config);
                 fillRegistrationForm(page, userData);
                 submitForm(page);
                 verifySubmission(page);
@@ -85,7 +85,8 @@ public class SixtySecondsRegistration {
     public static void main(String[] args) {
         try {
             JSONObject userData = readJsonFile("src/main/resources/data.json");
-            run(userData);
+            JSONObject config = readJsonFile("src/main/resources/config.json");
+            run(userData, config);
         } catch (IOException e) {
             logger.error("Error reading JSON file: {}", e.getMessage(), e);
         }

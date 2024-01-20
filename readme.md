@@ -1,21 +1,25 @@
 # SixtySecondsRegistration
 
 ## Project Overview
-This Java-based automation script, "SixtySecondsRegistration," automates the registration process for the "Sixty Seconds Spezial" competition hosted by the German Radio Station "Rockland Radio." The script, built with Playwright, interacts with web elements on the competition's webpage and fills the registration form using data from a JSON file.
+
+`SixtySecondsRegistration` is a Java-based automation script for registering to the "Sixty Seconds Spezial" competition
+hosted by Rockland Radio. Utilizing the Playwright framework, it automates the process of filling out and submitting the
+registration form, driven by user data and configuration settings defined in JSON files.
 
 ## Prerequisites
-To run this project, you need:
-- Java JDK 21
-- Maven
-- Playwright's Java package
 
-Ensure that all dependencies are installed and properly configured in your development environment.
+To run this project, the following are required:
+
+- Java JDK 21 or higher
+- Maven for managing dependencies
+- Playwright's Java package for web automation
 
 ## Installation
+
 1. Clone the repository:
    ``` bash
    git clone [repository-url]
-   ```
+   ``` 
 2. Navigate to the project directory and run Maven install to set up the project dependencies:
    ``` bash
    cd SixtySecondsRegistration
@@ -23,14 +27,18 @@ Ensure that all dependencies are installed and properly configured in your devel
    ```
 
 ## Configuration
-- Update the `src/main/resources/data.json` file with your details. The current file contains fake data and needs to be replaced with actual information.
+
+- The `data.json` file in `src/main/resources` contains user data for the registration form. It currently holds
+  placeholder data and should be updated with actual information.
+- The `config.json` file in `src/main/resources` holds configuration settings for the script, such as the URL and
+  browser options. Adjust as needed.
 
 ## Usage
-To execute the script, run the following command in the project's root directory:
+
+Run the script using the following command in the project's root directory:
+
 ``` bash
 java -classpath target/classes dev.christianbaumann.SixtySecondsRegistration
 ```
 
-## Acknowledgments
-- Rockland Radio for hosting the "Sixty Seconds Spezial" competition
-- Playwright community for providing the automation framework
+Ensure that the JSON files are properly configured before running the script.

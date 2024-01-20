@@ -20,48 +20,57 @@ public class SixtySecondsRegistration {
 
     private static final Logger logger = LoggerFactory.getLogger(SixtySecondsRegistration.class);
 
+    private static void navigateToRegistrationPage(Page page) {
+        page.navigate("https://www.rockland.de/aktionen/60-seconds-spezial.html");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Auswahl bestätigen")).click();
+        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Jetzt registrieren!")).click();
+    }
+
+    private static void fillRegistrationForm(Page page, JSONObject userData) {
+        page.getByPlaceholder("Vorname*").fill(userData.getString("vorname"));
+        page.getByPlaceholder("Nachname*").fill(userData.getString("nachname"));
+        page.getByPlaceholder("Telefon*").fill(userData.getString("telefon"));
+        page.getByPlaceholder("E-Mail*").fill(userData.getString("email"));
+        page.getByPlaceholder("Wohnort*").fill(userData.getString("wohnort"));
+        page.getByText("Hiermit stimme ich der Ü").click();
+    }
+
+    private static void submitForm(Page page) {
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Formular absenden!")).click();
+    }
+
+    private static void verifySubmission(Page page) {
+        Locator heading = page.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName("Vielen Dank für die Teilnahme!"));
+        if (heading != null && heading.isVisible()) {
+            logger.info("Erfolgreich teilgenommen.");
+        } else {
+            logger.error("Etwas ist schief gelaufen");
+        }
+    }
+
+    private static void waitForUserInput() {
+        System.out.println("ENTER drücken um fortzusetzen...");
+        try (Scanner scanner = new Scanner(System.in)) {
+            scanner.nextLine();
+        }
+    }
+
     public static void run(JSONObject userData) {
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
             Page page = browser.newPage();
 
             try {
-                page.navigate("https://www.rockland.de/aktionen/60-seconds-spezial.html");
-                page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Auswahl bestätigen")).click();
-                page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Jetzt registrieren!")).click();
-                page.getByPlaceholder("Vorname*").click();
-                page.getByPlaceholder("Vorname*").fill(userData.getString("vorname"));
-                page.getByPlaceholder("Nachname*").click();
-                page.getByPlaceholder("Nachname*").fill(userData.getString("nachname"));
-                page.getByPlaceholder("Telefon*").click();
-                page.getByPlaceholder("Telefon*").fill(userData.getString("telefon"));
-                page.getByPlaceholder("E-Mail*").click();
-                page.getByPlaceholder("E-Mail*").fill(userData.getString("email"));
-                page.getByPlaceholder("Wohnort*").click();
-                page.getByPlaceholder("Wohnort*").fill(userData.getString("wohnort"));
-                page.getByText("Hiermit stimme ich der Ü").click();
-                page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Formular absenden!")).click();
-
-                // Use getByRole to find the heading with the specified name
-                Locator heading = page.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName("Vielen Dank für die Teilnahme!"));
-                // Perform checks or interactions with the heading element
-                if (heading != null && heading.isVisible()) {
-                    System.out.println("Erfolgreich teilgenommen.");
-                } else {
-                    System.out.println("Etwas ist schief gelaufen");
-                }
-                logger.info("Form successfully filled and submitted.");
+                navigateToRegistrationPage(page);
+                fillRegistrationForm(page, userData);
+                submitForm(page);
+                verifySubmission(page);
             } catch (PlaywrightException e) {
                 logger.error("Error interacting with web elements: {}", e.getMessage());
             }
 
-            // Wait for the user to press Enter
-            System.out.println("ENTER drücken um fortzusetzen...");
-            try (Scanner scanner = new Scanner(System.in)) {
-                scanner.nextLine();
-            }
+            waitForUserInput();
 
-            // Clean up
             browser.close();
         } catch (Exception e) {
             logger.error("Error during automation: {}", e.getMessage());

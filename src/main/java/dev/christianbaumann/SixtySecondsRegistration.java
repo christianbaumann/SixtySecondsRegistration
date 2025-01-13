@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class SixtySecondsRegistration {
 
@@ -31,7 +30,7 @@ public class SixtySecondsRegistration {
         page.navigate(config.getString("url"));
 
         // Interact with specific elements to start the registration process
-        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Auswahl bestätigen")).click();
+        page.locator("#accept").click();
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Jetzt registrieren!")).click();
     }
 
@@ -77,16 +76,6 @@ public class SixtySecondsRegistration {
     }
 
     /**
-     * Waits for user input to proceed.
-     */
-    private static void waitForUserInput() {
-        System.out.println("ENTER drücken um fortzusetzen...");
-        try (Scanner scanner = new Scanner(System.in)) {
-            scanner.nextLine();
-        }
-    }
-
-    /**
      * Runs the registration automation process.
      *
      * @param userData The user data JSON object
@@ -107,8 +96,6 @@ public class SixtySecondsRegistration {
             } catch (PlaywrightException e) {
                 logger.error("Error interacting with web elements: {}", e.getMessage());
             }
-
-            waitForUserInput();
 
         } catch (PlaywrightException e) {
             logger.error("Error interacting with web elements: {}", e.getMessage());
